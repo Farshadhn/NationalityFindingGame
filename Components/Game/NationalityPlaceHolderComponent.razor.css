@@ -1,0 +1,11 @@
+﻿.nationalityPlaceHolder {
+    position: absolute;
+    width: 20vw;
+    height: 20vh;
+    min-height: 20vh;
+    line-height: 20vh;
+    background-color: white;
+    text-align: center;
+    font-size: 2em;
+}
+}

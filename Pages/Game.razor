@@ -1,0 +1,30 @@
+﻿@page "/Game"
+@using NationalityFindingGame.Components.Game
+@using NationalityFindingGame.Models.Game
+@using System.Drawing
+ 
+@foreach(var item in nationalityPlaceHolderModels)
+{
+<NationalityPlaceHolderComponent Position=@item.Position Content=@item.Content/>    
+}
+
+ 
+@code{
+
+
+    List<NationalityPlaceHolderModel> nationalityPlaceHolderModels = new();
+    protected override Task OnInitializedAsync()
+    {
+        nationalityPlaceHolderModels.Add(new NationalityPlaceHolderModel("Japanese"));
+        nationalityPlaceHolderModels.Add(new NationalityPlaceHolderModel("Chinese",new Point(0,75)));
+        nationalityPlaceHolderModels.Add(new NationalityPlaceHolderModel("Korean",new Point(55,0)));
+        nationalityPlaceHolderModels.Add(new NationalityPlaceHolderModel("Thai",new Point(55,75)));
+        return base.OnInitializedAsync();
+    }
+
+
+}
+
+
+
+
