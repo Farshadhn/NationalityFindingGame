@@ -62,3 +62,11 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.Score {
+    left: 30vw;
+    position: absolute;
+    top: 90vh;
+    background-color: white;
+    z-index: 10;
+}

@@ -1,6 +1,7 @@
 ﻿.ImagePlaceHolder {
-    width:20vw;
-    height:20vh;
-    position:absolute;
-
+    width: 20vw;
+    height: 20vh;
+    position: absolute;
+    top: 0;
+    left: 31vw
 }

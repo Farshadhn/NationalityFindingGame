@@ -1,0 +1,27 @@
+﻿<table class="table border  border-dark table-striped " style=" width: 20vw ;text-align: center; margin: auto" >
+    <thead>
+        <tr>
+            <td style="background-color: beige;">
+                Leaderboard (Top 5)
+            </td>
+
+        </tr>
+
+
+    </thead>
+    <tbody>
+
+        @foreach (var item in HighestPoints)
+        {
+            <tr>
+                <td>
+                    @item
+                </td>
+
+            </tr>
+
+        }
+
+    </tbody>
+
+</table>

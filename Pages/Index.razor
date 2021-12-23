@@ -1,8 +1,37 @@
 ﻿@page "/"
+@using NationalityFindingGame.Components;
+@inject NavigationManager nav;
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
  
-<p>Body</p>
-<p>Body</p>
-<p>Body</p>
-<p>Body</p>
-<p>Body</p>
-<p>Body</p>
+
+
+<Leaderboard 
+HighestPoints=HighestPoints></Leaderboard>
+
+
+
+
+
+<button class="btn btn-success m-auto d-block mt-4"  @onclick='()=>nav.NavigateTo("\\Game")'>
+    Go To Game Page
+</button>
+
+ <button class="btn btn-success m-auto d-block mt-4"  @onclick='()=>Share = !Share'>
+    Share
+</button>
+@if (Share)
+{
+    <h1 class="text-center mt-4">Do you reallllllly want to Share ?!???!</h1>
+}
+@code
+{
+    bool Share = false;
+    List<int> HighestPoints = new List<int>();
+    protected async override Task OnInitializedAsync()
+    {
+        HighestPoints = await localStorage.GetItemAsync<List<int>>("NFG_Top") ?? new List<int>();
+
+        await base.OnInitializedAsync();
+    }
+
+}

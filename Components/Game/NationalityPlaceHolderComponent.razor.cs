@@ -23,9 +23,7 @@ public partial class NationalityPlaceHolderComponent
 
     #endregion
 
-    #region ... Properties ...
-
-    #endregion
+ 
 
     #region ... Events ....
 
