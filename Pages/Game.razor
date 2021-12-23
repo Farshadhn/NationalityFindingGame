@@ -2,27 +2,93 @@
 @using NationalityFindingGame.Components.Game
 @using NationalityFindingGame.Models.Game
 @using System.Drawing
- 
-@foreach(var item in nationalityPlaceHolderModels)
+@inject IJSRuntime ijs;
+
+
+
+@if (Started)
 {
-<NationalityPlaceHolderComponent Position=@item.Position Content=@item.Content/>    
+    <h1 style="left:3vw;position:fixed">@Points</h1>
+    <CascadingValue Value="@SelectedImage">
+        <ImagePlaceHolder Content=@SelectedImage />
+        @foreach (var item in nationalityPlaceHolderModels)
+    {
+        <NationalityPlaceHolderComponent OnStatusUpdated=SetPoints Position=@item.Position Content=@item.Content />
+    }
+</CascadingValue>
+
+}
+else
+{
+    <button class="btn btn-success" style="top: 90vh;left: 35vw;position: absolute" @onclick="Start">Start !!!!</button>
 }
 
- 
-@code{
+@code {
 
-
-    List<NationalityPlaceHolderModel> nationalityPlaceHolderModels = new();
-    protected override Task OnInitializedAsync()
+    public async Task SetPoints(int point)
     {
-        nationalityPlaceHolderModels.Add(new NationalityPlaceHolderModel("Japanese"));
-        nationalityPlaceHolderModels.Add(new NationalityPlaceHolderModel("Chinese",new Point(0,75)));
-        nationalityPlaceHolderModels.Add(new NationalityPlaceHolderModel("Korean",new Point(55,0)));
-        nationalityPlaceHolderModels.Add(new NationalityPlaceHolderModel("Thai",new Point(55,75)));
-        return base.OnInitializedAsync();
+        Points += point;
+
+        await ijs.InvokeVoidAsync("stopAnimation", dotNetReference, "ImagePlaceHolderId");
     }
 
+    public int Points { get; set; } = 0;
+    bool Started = false;
+    List<NationalityPlaceHolderModel> nationalityPlaceHolderModels = new();
+    DotNetObjectReference<Game> dotNetReference;
+    ImagePlaceHolderModel SelectedImage = new();
+    List<ImagePlaceHolderModel> ListOfImages = new();
+    protected override Task OnInitializedAsync()
+    {
+        dotNetReference = DotNetObjectReference.Create(this);
+        SeedData();
 
+        return base.OnInitializedAsync();
+    }
+    private void SeedData()
+    {
+        nationalityPlaceHolderModels.Add(new NationalityPlaceHolderModel("Japanese"));
+        nationalityPlaceHolderModels.Add(new NationalityPlaceHolderModel("Chinese", new Point(0, 75)));
+        nationalityPlaceHolderModels.Add(new NationalityPlaceHolderModel("Korean", new Point(55, 0)));
+        nationalityPlaceHolderModels.Add(new NationalityPlaceHolderModel("Thai", new Point(55, 75)));
+        ListOfImages.Add(new("Face1.jpg", "Japanese"));
+        ListOfImages.Add(new("Face2.jpg", "Korean"));
+        ListOfImages.Add(new("Face3.jpg", "Thai"));
+        ListOfImages.Add(new("Face4.jpg", "Japanese"));
+        ListOfImages.Add(new("Face5.jpg", "Chinese"));
+        ListOfImages.Add(new("Face6.jpg", "Korean"));
+        ListOfImages.Add(new("Face7.jpg", "Japanese"));
+        ListOfImages.Add(new("Face8.jpg", "Chinese"));
+        ListOfImages.Add(new("Face9.jpg", "Japanese"));
+        ListOfImages.Add(new("Face10.jpg", "Chinese"));
+    }
+    private async Task Start()
+    {
+        Started = true;
+
+        await Task.Delay(10); // To let UI to Make it ready.
+        SelectNewFacePhoto();
+    }
+    private async void SelectNewFacePhoto()
+    {
+        SelectedImage = ListOfImages.FirstOrDefault(x => !x.Checked);
+        if (SelectedImage is null )
+            return; // ToDo Modal
+        SelectedImage.Checked = true;
+        StateHasChanged();
+        await StartnewFacePhoto();
+    }
+    private async Task StartnewFacePhoto()
+    {
+
+        await ijs.InvokeVoidAsync("StartAnimation", dotNetReference, "ImagePlaceHolderId", 10000);
+    }
+    [JSInvokable("NextFacePhoto")]
+    public void NextFacePhoto()
+    {
+        SelectNewFacePhoto();
+        StateHasChanged();
+    }
 }
 
 

@@ -1,7 +1,13 @@
 ﻿
 
-<div style='top:@(Position.Y+"vh");left:@(Position.X+"vw");' class="nationalityPlaceHolder rounded">
-    
+<div style='top:@(Position.Y+"vh");left:@(Position.X+"vw");'
+     dropzone="move"
+     class="nationalityPlaceHolder rounded"  
+     @ondrop:preventDefault='true'
+     @ondrop="(e)=>FindDropedItem(e)"
+ondragover="event.preventDefault();"
+>
+
     <p>@Content</p>
 
 </div>
